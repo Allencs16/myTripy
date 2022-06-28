@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytripy/screens/home/home.dart';
+import 'package:mytripy/screens/welcome/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'myTripy',
       theme: ThemeData(
         primaryColor: const Color(0xFF1FA555),
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: Welcome(),
     );
   }
 }
