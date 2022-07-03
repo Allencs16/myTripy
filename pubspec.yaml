@@ -58,7 +58,8 @@ flutter:
   uses-material-design: true
 
   assets:
-   - lib/assets/landscape.png
+    - lib/assets/landscape.png
+    - lib/assets/gummy-camping.png 
 
   # To add assets to your application, add an assets section, like this:
   # assets:

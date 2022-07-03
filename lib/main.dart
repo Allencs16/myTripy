@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mytripy/screens/home/home.dart';
+import 'package:mytripy/screens/login%20/login.dart';
 import 'package:mytripy/screens/welcome/welcome.dart';
 
 void main() {
@@ -18,8 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF1FA555),
         primarySwatch: Colors.blue,
+        brightness: Brightness.light
       ),
       home: Welcome(),
+      routes: {
+        '/login': (BuildContext context) => Login()
+      }
     );
   }
 }

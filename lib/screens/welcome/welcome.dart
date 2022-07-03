@@ -44,7 +44,9 @@ class Welcome extends StatelessWidget{
                   width: 380,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () {}, 
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                    },
                     child: const Text('Continue'),
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor

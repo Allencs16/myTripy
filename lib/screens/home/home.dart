@@ -4,7 +4,7 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: const SafeArea(
         child: Center(
           child: Text('Hello world \nthis is myTripy'),
         ),
