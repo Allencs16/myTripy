@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:mytripy/models/user/user.dart';
+import 'package:mytripy/services/serviceLocator.dart';
+import 'package:mytripy/services/user/userService.dart';
 
-class Home extends StatelessWidget{
+class Home extends StatefulWidget{
+  late User usuario;
+  final UserService _userService = getIt<UserService>();
+  @override
+  State<Home> createState() {
+    usuario = _userService.getUser();
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const SafeArea(
+      body: SafeArea(
         child: Center(
-          child: Text('Hello world \nthis is myTripy'),
+          child: Text('${widget.usuario.name}'),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

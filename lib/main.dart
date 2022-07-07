@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mytripy/screens/home/home.dart';
 import 'package:mytripy/screens/login%20/login.dart';
 import 'package:mytripy/screens/welcome/welcome.dart';
+import 'package:mytripy/services/serviceLocator.dart';
 
-void main() {
+Future<void> main() async {
+  await setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -22,7 +25,8 @@ class MyApp extends StatelessWidget {
       ),
       home: Welcome(),
       routes: {
-        '/login': (BuildContext context) => Login()
+        '/login': (BuildContext context) => Login(),
+        '/dashboard': (BuildContext context) => Home()
       }
     );
   }

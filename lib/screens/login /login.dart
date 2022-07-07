@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:mytripy/models/user/user.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:mytripy/services/serviceLocator.dart';
+import 'package:mytripy/services/user/userService.dart';
 
 class Login extends StatefulWidget{
   @override
@@ -9,7 +16,37 @@ class Login extends StatefulWidget{
 }
 
 class _LoginState extends State<Login>{
+
+  final UserService _userService = getIt<UserService>();
+
+  Future<User> login() async {
+  final response = await http.post(Uri.parse('http://localhost:3000/user/authenticate'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': _emailController.text,
+      'password': _passwordController.text
+    })
+  );
+  
+  if (response.statusCode == 200) {
+    final User user = User.fromJson(jsonDecode(response.body));
+
+    _userService.setUser(user);
+
+    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+
+    return user;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
+
   bool _passwordVisibility = false;
+  TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context){
@@ -46,6 +83,7 @@ class _LoginState extends State<Login>{
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                         child: TextFormField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             hintText: 'E-mail',
                             focusedBorder: UnderlineInputBorder(
@@ -126,7 +164,7 @@ class _LoginState extends State<Login>{
                   height: 45,
                   child: ElevatedButton(
                     onPressed: (() {
-                      
+                      login();
                     }),
                     child: const Text(
                       'Login',
