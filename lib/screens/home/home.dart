@@ -1,32 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:mytripy/models/user/user.dart';
+import 'package:mytripy/screens/dashboard/dashboard.dart';
+import 'package:mytripy/screens/profile/profile.dart';
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
 
 class Home extends StatefulWidget{
-  late User usuario;
-  final UserService _userService = getIt<UserService>();
   @override
   State<Home> createState() {
-    usuario = _userService.getUser();
     return _HomeState();
   }
 }
 
 class _HomeState extends State<Home> {
+
+  int _selectedIndex = 0;
+  List<Widget> _widgetList = <Widget>[
+    Dashboard(),
+    Profile(),
+    Profile()
+  ];
+
+  void changeIndex(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Text('${widget.usuario.name}'),
-        ),
-      ),
+      body: _widgetList.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
         showUnselectedLabels: false,
         showSelectedLabels: false,
         iconSize: 30,
+        currentIndex: _selectedIndex,
+        onTap: changeIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined), 

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mytripy/services/requestService.dart/request-service.dart';
+import 'package:mytripy/services/serviceLocator.dart';
 
 class User {
   int? id;
@@ -28,7 +30,7 @@ class User {
   }
 
   Future<User> fetchAlbum() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/user/3'));
+    final response = await http.get(Uri.parse('http://localhost:3000/user'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -39,5 +41,22 @@ class User {
       // then throw an exception.
       throw Exception('Failed to load album');
     }
+  }
+}
+
+Future<User> authenticate(String email, String password) async{
+  final RequestService _requestService = getIt<RequestService>();
+  final body = {"email": email, "password": password};
+  final json = jsonEncode(body);
+  final response = await _requestService.httpPostForLogin('token', '/user/authenticate', json);
+
+   if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return User.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
   }
 }

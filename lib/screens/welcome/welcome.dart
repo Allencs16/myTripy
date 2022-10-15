@@ -39,10 +39,10 @@ class Welcome extends StatelessWidget{
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 580, 0, 16),
+                padding: const EdgeInsets.fromLTRB(0, 480, 0, 16),
                 child: SizedBox(
-                  width: 380,
-                  height: 40,
+                  width: 300,
+                  height: 45,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
