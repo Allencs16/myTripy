@@ -202,9 +202,16 @@ class _LoginState extends State<Login>{
   auth() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    _usuarioLogado = authenticate(email, password);
-    _userService.setUser(_usuarioLogado);
-    if(await _userService.getUserLogado() != null){
+    if(email.isEmpty || password.isEmpty){
+      const snackBar = SnackBar(
+        content: Text('Ops suas credenciais estão erradas!'),
+        backgroundColor: Color(0xFF1FA555),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      _usuarioLogado = authenticate(email, password);
+      _userService.setUser(_usuarioLogado);
       Navigator.pushNamed(context, '/dashboard');
     }
   }

@@ -28,20 +28,6 @@ class User {
       updatedAt: json['updatedAt']
     );
   }
-
-  Future<User> fetchAlbum() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/user'));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-  }
 }
 
 Future<User> authenticate(String email, String password) async{
