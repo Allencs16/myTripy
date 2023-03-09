@@ -14,7 +14,6 @@ class Dashboard extends StatefulWidget{
 class _StateDashboard extends State<Dashboard>{
 
   final UserService _userService = getIt<UserService>();
-  late Future<User> _usuarioLogado = _userService.getUserLogado();
 
   @override
   Widget build(BuildContext context){
@@ -53,7 +52,7 @@ class _StateDashboard extends State<Dashboard>{
                             ),
                           ),
                           FutureBuilder<User>(
-                            future: _usuarioLogado,
+                            future: _userService.getUserLogado(),
                             builder: (context, snapshot) {
                               if(snapshot.hasData){
                                 return Text(
@@ -64,6 +63,7 @@ class _StateDashboard extends State<Dashboard>{
                                   ),
                                 );
                               } else if (snapshot.hasError){
+                                print(snapshot.error);
                                 return Text('Não foi possivel carregar usuario');
                               }
                               return CupertinoActivityIndicator();

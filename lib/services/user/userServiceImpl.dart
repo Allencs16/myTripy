@@ -2,7 +2,7 @@ import 'package:mytripy/models/user/user.dart';
 import 'package:mytripy/services/user/userService.dart';
 
 class UserServiceImpl extends UserService{
-  late Future<User> usuarioLogado = '' as Future<User>;
+  late Future<User> usuarioLogado;
 
   @override
   Future<User> getUserLogado() {

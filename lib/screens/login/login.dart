@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:mytripy/models/token/token.dart';
 import 'package:mytripy/models/user/user.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget{
   @override
@@ -202,6 +204,8 @@ class _LoginState extends State<Login>{
   auth() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    final prefs = await SharedPreferences.getInstance();
+    
     if(email.isEmpty || password.isEmpty){
       const snackBar = SnackBar(
         content: Text('Ops suas credenciais estão erradas!'),
@@ -210,8 +214,10 @@ class _LoginState extends State<Login>{
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      _usuarioLogado = authenticate(email, password);
-      _userService.setUser(_usuarioLogado);
+      Token token = await authenticate(email, password);
+      prefs.setString("token", token.token.toString());
+      Future<User> usuario = getUserInformation(email);
+      _userService.setUser(usuario);
       Navigator.pushNamed(context, '/dashboard');
     }
   }

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mytripy/services/requestService.dart/request-service.dart';
 
 class RequestServiceImpl extends RequestService {
-  final String baseUrl = 'http://localhost:3000';
+  final String baseUrl = 'http://localhost:8889';
   final String prodBaseUrl = '';
 
   @override
