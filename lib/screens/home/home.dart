@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mytripy/models/user/user.dart';
 import 'package:mytripy/screens/dashboard/dashboard.dart';
 import 'package:mytripy/screens/profile/profile.dart';
+import 'package:mytripy/screens/week/week.dart';
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
 
@@ -15,9 +16,9 @@ class Home extends StatefulWidget{
 class _HomeState extends State<Home> {
 
   int _selectedIndex = 0;
-  List<Widget> _widgetList = <Widget>[
+  final List<Widget> _widgetList = <Widget>[
     Dashboard(),
-    Profile(),
+    Week(),
     Profile()
   ];
 
@@ -41,17 +42,17 @@ class _HomeState extends State<Home> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined), 
-            label: 'teste',
+            label: 'Dashboard',
             activeIcon: Icon(Icons.home)
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.tour_outlined), 
-            label: 'teste',
+            label: 'Week',
             activeIcon: Icon(Icons.tour)
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline), 
-            label: 'teste',
+            label: 'Profile',
             activeIcon: Icon(Icons.person)
           )
         ]

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mytripy/components/bottomSheet/bottom_sheet.dart';
 import 'package:mytripy/components/loading/loading.dart';
 import 'package:mytripy/models/trips/trip.dart';
 import 'package:mytripy/models/user/user.dart';
+import 'package:mytripy/models/week/week_model.dart';
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -26,7 +28,7 @@ class _StateDashboard extends State<Dashboard>{
           children: [
             Center(
               child: Container(
-                width: 350,
+                width: MediaQuery.of(context).size.width * 0.95,
                 height: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
@@ -48,7 +50,7 @@ class _StateDashboard extends State<Dashboard>{
                       child: Column(
                         children: <Widget>[
                           const Text(
-                            'Welcome back',
+                            'Bem vindo de volta',
                             style: TextStyle(
                               fontSize: 16,
                               color: Color(0xffc3c3c3)
@@ -93,8 +95,8 @@ class _StateDashboard extends State<Dashboard>{
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
-                child: FutureBuilder<List<Trip>>(
-                  future: getTrips(),
+                child: FutureBuilder<List<WeekModel>>(
+                  future: getWeekByUser(),
                   builder: (context, snapshot) {
                     if(snapshot.hasData){
                       return ListView.builder(
@@ -107,31 +109,26 @@ class _StateDashboard extends State<Dashboard>{
                             child: InkWell(
                               splashColor: Colors.blue.withAlpha(30),
                               onTap: () {
-                                debugPrint('Card tapped.');
+                                MainBottomSheet.showBottomSheet(context, snapshot.data!.elementAt(index));
                               },
                               child: SizedBox(
                                 width: 300,
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.network(
-                                        "https://images.squarespace-cdn.com/content/v1/5b0eb59df793928fa7f488ff/1536780543743-TZT0SJMRKV5LUOOY8FS0/Industryyyy.jpg",
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    Padding(
                                       padding: const EdgeInsets.only(bottom:8.0),
                                       child: ListTile(
+                                        leading: const Icon(Icons.map_outlined),
                                         title: Text(
-                                          snapshot.data!.elementAt(index).name.toString(),
-                                          style: TextStyle(
+                                          "Semana: ${DateFormat.MMMMd('PT_BR').format(DateTime.parse(snapshot.data!.elementAt(index).startDate.toString()))} até ${DateFormat.MMMMd('PT_BR').format(DateTime.parse(snapshot.data!.elementAt(index).endDate.toString()))}",
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold
                                           ),
                                         ),
-                                        subtitle: Text(snapshot.data!.elementAt(index).description.toString()),
+                                        subtitle: Text("Km total: ${snapshot.data!.elementAt(index).totalKm}"),
                                       ),
-                                    )
+                                    ),
+
                                   ],
                                 ),
                               ),
@@ -140,8 +137,7 @@ class _StateDashboard extends State<Dashboard>{
                         },
                       );
                     } else if(snapshot.hasError){
-                      print(snapshot.error);
-                      return Text("error");
+                      return const Text("");
                     }
                     return Loading();
                   },

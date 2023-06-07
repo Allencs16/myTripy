@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mytripy/screens/home/home.dart';
 import 'package:mytripy/screens/login/login.dart';
 import 'package:mytripy/screens/welcome/welcome.dart';
@@ -7,6 +8,7 @@ import 'package:mytripy/services/serviceLocator.dart';
 Future<void> main() async {
   await setupServiceLocator();
   runApp(const MyApp());
+  initializeDateFormatting('pt_BR');
 }
 
 class MyApp extends StatelessWidget {
