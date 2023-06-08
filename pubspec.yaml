@@ -40,6 +40,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.18.0
   badges: 
+  calendar_timeline: ^1.1.2
 
 dev_dependencies:
   flutter_test:
