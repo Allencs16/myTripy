@@ -153,7 +153,7 @@ class _LoginState extends State<Login>{
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                       )
                     ),
                   ),

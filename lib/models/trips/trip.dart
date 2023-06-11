@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:mytripy/models/user/user.dart';
+import 'package:mytripy/models/vehicle/vehicle_model.dart';
 import 'package:mytripy/models/week/week_model.dart';
 import 'package:mytripy/services/requestService.dart/request-service.dart';
 import 'package:mytripy/services/serviceLocator.dart';
@@ -17,11 +18,11 @@ class Trip {
   double? price;
   String? place;
   double? food;
-  DateTime? startDay;
-  DateTime? endDay;
+  String? startDay;
+  String? endDay;
   WeekModel? weekModel;
   String? stays;
-  String? vehicle;
+  Vehicle? vehicle;
 
   Trip({this.id, this.name, this.description, this.state, this.price, this.distanceFromSource, this.place, this.startDay, this.endDay, this.food, this.stays, this.vehicle, this.weekModel});
 
@@ -38,7 +39,7 @@ class Trip {
       price: json["price"],
       state: json["state"],
       stays: json["stays"],
-      vehicle: json["vehicle"],
+      vehicle: Vehicle.fromJson(json["vehicle"]),
       weekModel: WeekModel.fromJson(json["week"])
     );
   }
@@ -76,7 +77,6 @@ Future<Trip> getTripByUserAndDay(DateTime date) async {
 
   var decodedResponde = jsonDecode(response.body);
 
-  print(decodedResponde);
   Trip trip = Trip.fromJson(decodedResponde);
 
   if(response.statusCode == 200){

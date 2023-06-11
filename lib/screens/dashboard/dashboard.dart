@@ -22,6 +22,7 @@ class _StateDashboard extends State<Dashboard>{
   DateTime todayDate = DateTime.now();
   DateTime _selectDate = DateTime.now();
   late int? userId;
+  Future<Trip> trip = getTripByUserAndDay(DateTime.now());
 
   final UserService _userService = getIt<UserService>();
 
@@ -32,8 +33,7 @@ class _StateDashboard extends State<Dashboard>{
 
   @override
   Widget build(BuildContext context){
-    DateTime futureDate = DateTime(todayDate.year + 1);
-    Future<Trip> trip = getTripByUserAndDay(_selectDate);
+    DateTime futureDate = DateTime(DateTime.now().year + 1);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -105,13 +105,16 @@ class _StateDashboard extends State<Dashboard>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
+              padding: const EdgeInsets.only(bottom: 12.0, top: 12),
               child: CalendarTimeline(
-                initialDate: DateTime.now(), 
+                initialDate: _selectDate, 
                 firstDate: DateTime(todayDate.year - 1), 
                 lastDate: futureDate, 
                 onDateSelected: (date) {
-                  _selectDate = date;
+                  setState(() {
+                    _selectDate = date;
+                    trip = getTripByUserAndDay(date);
+                  });
                 },
                 dayColor: Theme.of(context).primaryColor,
                 activeBackgroundDayColor: Theme.of(context).primaryColor,
@@ -128,31 +131,34 @@ class _StateDashboard extends State<Dashboard>{
                     if(snapshot.hasData){
                       return Column(
                         children: [
-                          Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: InkWell(
-                              splashColor: Colors.blue.withAlpha(30),
-                              onTap: () {
-                              },
-                              child: SizedBox(
-                                width: 300,
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom:8.0),
-                                      child: ListTile(
-                                        leading: const Icon(Icons.map_outlined),
-                                        title: Text(
-                                          "Semana: ",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: Card(
+                              clipBehavior: Clip.hardEdge,
+                              child: InkWell(
+                                splashColor: Colors.blue.withAlpha(30),
+                                onTap: () {
+                                },
+                                child: SizedBox(
+                                  width: 300,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom:8.0),
+                                        child: ListTile(
+                                          leading: const Icon(Icons.map_outlined),
+                                          title: Text(
+                                            "Proxima cidade: ${snapshot.data!.name}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold
+                                            ),
                                           ),
+                                          subtitle: Text("Distancia: ${snapshot.data!.distanceFromSource.toString()} Km"),
                                         ),
-                                        subtitle: Text(""),
                                       ),
-                                    ),
-                  
-                                  ],
+                                            
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
