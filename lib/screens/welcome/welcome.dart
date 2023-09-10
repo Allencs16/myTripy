@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mytripy/components/loading/loading.dart';
+import 'package:mytripy/models/token/token.dart';
+import 'package:mytripy/models/user/user.dart';
+import 'package:mytripy/services/serviceLocator.dart';
+import 'package:mytripy/services/user/userService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Welcome extends StatelessWidget{
+class Welcome extends StatefulWidget{
+  @override
+  State<Welcome> createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<Welcome> {
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context){
+
+    verifyTokenAndLogin();
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -43,7 +58,7 @@ class Welcome extends StatelessWidget{
                 child: SizedBox(
                   width: 300,
                   height: 45,
-                  child: ElevatedButton(
+                  child: isLoading ? Loading() : ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
                     },
@@ -59,5 +74,26 @@ class Welcome extends StatelessWidget{
         )
       ),
     );
+  }
+
+  verifyTokenAndLogin() async{
+    final SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
+    String? _emailUsuario = _sharedPreferences.getString("emailUsuario");
+    final UserService _userService = getIt<UserService>();
+
+    if(await verifyTokenValid()){
+      if (_emailUsuario == null) {
+        return;
+      }
+      Future<User> usuario = getUserInformation(_emailUsuario);
+      _userService.setUser(usuario);
+      Navigator.pushNamed(context, "/dashboard");
+      return;
+    } else {
+      setState(() {
+        isLoading = false;
+        return;
+      });
+    }
   }
 }

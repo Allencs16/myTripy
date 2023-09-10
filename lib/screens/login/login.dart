@@ -216,6 +216,7 @@ class _LoginState extends State<Login>{
     } else {
       Token token = await authenticate(email, password);
       prefs.setString("token", token.token.toString());
+      prefs.setString("emailUsuario", email);
       Future<User> usuario = getUserInformation(email);
       _userService.setUser(usuario);
       Navigator.pushNamed(context, '/dashboard');
