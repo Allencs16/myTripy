@@ -88,16 +88,21 @@ class _StateDashboard extends State<Dashboard>{
                         ],
                       ),
                     ),
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffB35340),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward,
-                        color: Color(0xffffffff),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffB35340),
+                          borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward,
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ],

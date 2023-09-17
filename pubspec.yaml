@@ -33,6 +33,7 @@ dependencies:
   http: 
   get_it: ^7.2.0
   shared_preferences: ^2.0.18
+  glassmorphism_ui: ^0.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -67,7 +68,8 @@ flutter:
 
   assets:
     - lib/assets/landscape.png
-    - lib/assets/gummy-camping.png 
+    - lib/assets/gummy-camping.png
+    - lib/assets/77.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

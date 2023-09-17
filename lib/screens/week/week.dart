@@ -133,9 +133,10 @@ class _StateWeek extends State<Week>{
                         title: Text('Selecione o Usuário'),
                         content: SizedBox(
                           child: FutureBuilder(
+                            future: null,
                             builder: (context, snapshot) {
                               return Loading();
-                            },
+                            }
                           ),
                         )
                       )

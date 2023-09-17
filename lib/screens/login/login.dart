@@ -1,11 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:mytripy/models/token/token.dart';
 import 'package:mytripy/models/user/user.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +23,6 @@ class _LoginState extends State<Login>{
   bool _passwordVisibility = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  late Future<User> _usuarioLogado;
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -182,12 +179,17 @@ class _LoginState extends State<Login>{
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                     child: Center(
-                      child: Text(
-                        'Registre-se',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/sign-up');
+                        },
+                        child: Text(
+                          'Registre-se',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ),
