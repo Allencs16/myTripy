@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:mytripy/components/snackbar/Main_snackBar.dart';
+import 'package:mytripy/models/user/user.dart';
 
 class SignUp extends StatefulWidget{
   @override
@@ -140,9 +142,7 @@ class _SignUpState extends State<SignUp>{
                             child: Padding(
                               padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: ElevatedButton(
-                                onPressed: () {
-                                  
-                                }, 
+                                onPressed: () => signUp(), 
                                 child: const Text(
                                   'Cadastrar',
                                   style: TextStyle(
@@ -170,5 +170,16 @@ class _SignUpState extends State<SignUp>{
         ),
       )
     );
+  }
+
+  signUp() async{
+    User _user = User(name: _name.text, email: _email.text, password: _senha.text, username: _email.text);
+
+    if(await createUser(_user)){
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      MainSnackBar.showSnackBar(context, 'Usuário Criado Com Sucesso.');
+    }else {
+      MainSnackBar.showSnackBar(context, 'Algo deu errado em criar Usuário');
+    }
   }
 }

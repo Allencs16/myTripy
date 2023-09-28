@@ -28,6 +28,18 @@ class User {
       createdAt: json['createdAt'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['username'] = username;
+    data['email'] = email;
+    data['password'] = password;
+    data['bio'] = bio;
+    data['createdAt'] = createdAt;
+    return data;
+  }
 }
 
 Future<Token> authenticate(String email, String password) async{
@@ -57,5 +69,17 @@ Future<User> getUserInformation(String email) async {
     return User.fromJson(jsonDecode(response.body));
   } else {
     throw Exception("Something went Wrong ${response.statusCode}");
+  }
+}
+
+Future<bool> createUser(User user) async{
+  String userJson = '{"name": "${user.name}", "username": "${user.username}", "email": "${user.email}", "password": "${user.password}"}';
+  final RequestService _requestService = getIt<RequestService>();
+  final response = await _requestService.httpPost('', '/public/user/create', userJson);
+
+  if(response.statusCode == 200){
+    return true;
+  } else {
+    return false;
   }
 }
