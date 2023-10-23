@@ -25,7 +25,7 @@ class _StateWeekInfo extends State<WeekInfo>{
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(widget.week.budget.toString())
+              Text(widget.week.totalBudget.toString())
             ],
           ),
         )

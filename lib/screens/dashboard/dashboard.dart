@@ -6,6 +6,7 @@ import 'package:mytripy/components/loading/loading.dart';
 import 'package:mytripy/models/trips/trip.dart';
 import 'package:mytripy/models/user/user.dart';
 import 'package:mytripy/models/week/week_model.dart';
+import 'package:mytripy/screens/trip/trip.dart';
 import 'package:mytripy/screens/week/week_info.dart';
 import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
@@ -22,7 +23,7 @@ class _StateDashboard extends State<Dashboard>{
   DateTime todayDate = DateTime.now();
   DateTime _selectDate = DateTime.now();
   late int? userId;
-  Future<Trip> trip = getTripByUserAndDay(DateTime.now());
+  Future<List<TripModel>> trip = getTripByUserAndDay(DateTime.now());
 
   final UserService _userService = getIt<UserService>();
 
@@ -130,7 +131,7 @@ class _StateDashboard extends State<Dashboard>{
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
-                child: FutureBuilder<Trip>(
+                child: FutureBuilder<List<TripModel>>(
                   future: trip,
                   builder: (context, snapshot) {
                     if(snapshot.hasData){
@@ -138,36 +139,43 @@ class _StateDashboard extends State<Dashboard>{
                         children: [
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.95,
-                            child: Card(
-                              clipBehavior: Clip.hardEdge,
-                              child: InkWell(
-                                splashColor: Colors.blue.withAlpha(30),
-                                onTap: () {
-                                },
-                                child: SizedBox(
-                                  width: 300,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom:8.0),
-                                        child: ListTile(
-                                          leading: const Icon(Icons.map_outlined),
-                                          title: Text(
-                                            "Proxima cidade: ${snapshot.data!.name}",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Card(
+                                    clipBehavior: Clip.hardEdge,
+                                    child: InkWell(
+                                      splashColor: Colors.blue.withAlpha(30),
+                                      onTap: () => selectTrip(snapshot.data!.elementAt(index)),
+                                      child: SizedBox(
+                                        width: 300,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom:8.0),
+                                              child: ListTile(
+                                                leading: const Icon(Icons.map_outlined),
+                                                title: Text(
+                                                  "Proxima cidade: ${snapshot.data!.elementAt(index).name}",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                                subtitle: Text("Distancia: ${snapshot.data!.elementAt(index).distanceFromSource.toString()} Km"),
+                                              ),
                                             ),
-                                          ),
-                                          subtitle: Text("Distancia: ${snapshot.data!.distanceFromSource.toString()} Km"),
+                                          ],
                                         ),
                                       ),
-                                            
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          )
+                          ),
                         ],
                       );
                     } else if(snapshot.hasError){
@@ -182,5 +190,9 @@ class _StateDashboard extends State<Dashboard>{
         )
       )
     );
+  }
+
+  selectTrip(TripModel trip){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Trip(trip: trip)));
   }
 }

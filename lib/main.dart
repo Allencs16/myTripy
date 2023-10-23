@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/login': (BuildContext context) => Login(),
         '/dashboard': (BuildContext context) => Home(),
         '/sign-up':(BuildContext context) => SignUp()
-      }
+      },
     );
   }
 }

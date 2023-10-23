@@ -9,34 +9,30 @@ import 'package:mytripy/services/serviceLocator.dart';
 import 'package:mytripy/services/user/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Trip {
+class TripModel {
   int? id;
   String? name;
   String? description;
   String? state;
-  num? distanceFromSource;
-  double? price;
+  double? distanceFromSource;
   String? place;
-  double? food;
   String? startDay;
   String? endDay;
   WeekModel? weekModel;
   String? stays;
   Vehicle? vehicle;
 
-  Trip({this.id, this.name, this.description, this.state, this.price, this.distanceFromSource, this.place, this.startDay, this.endDay, this.food, this.stays, this.vehicle, this.weekModel});
+  TripModel({this.id, this.name, this.description, this.state, this.distanceFromSource, this.place, this.startDay, this.endDay, this.stays, this.vehicle, this.weekModel});
 
-  factory Trip.fromJson(Map<String, dynamic> json){
-    return Trip(
+  factory TripModel.fromJson(Map<String, dynamic> json){
+    return TripModel(
       id: json["id"],
       name: json["name"],
       description: json["description"],
       distanceFromSource: json["distanceFromSource"],
       startDay: json["startDay"],
       endDay: json["endDay"],
-      food: json["food"],
       place: json["place"],
-      price: json["price"],
       state: json["state"],
       stays: json["stays"],
       vehicle: Vehicle.fromJson(json["vehicle"]),
@@ -45,7 +41,7 @@ class Trip {
   }
 }
 
-Future<List<Trip>> getTrips() async {
+Future<List<TripModel>> getTrips() async {
   final RequestService _requestService = getIt<RequestService>();
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString("token");
@@ -54,7 +50,7 @@ Future<List<Trip>> getTrips() async {
   
   var decodedResponde = jsonDecode(response.body);
 
-  List<Trip> finalResponse = List<Trip>.from(decodedResponde.map((trip) => Trip.fromJson(trip))).toList();
+  List<TripModel> finalResponse = List<TripModel>.from(decodedResponde.map((trip) => TripModel.fromJson(trip))).toList();
 
   if(response.statusCode == 200){
     return finalResponse;
@@ -63,7 +59,7 @@ Future<List<Trip>> getTrips() async {
   }
 }
 
-Future<Trip> getTripByUserAndDay(DateTime date) async {
+Future<List<TripModel>> getTripByUserAndDay(DateTime date) async {
   final RequestService _requestService = getIt<RequestService>();
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString("token");
@@ -75,12 +71,12 @@ Future<Trip> getTripByUserAndDay(DateTime date) async {
 
   var response = await _requestService.httpGet(token.toString(), '/trip/user/$userId/$formattedDate');
 
-  var decodedResponde = jsonDecode(response.body);
+  var decodedResponde = jsonDecode(response.body) as List;
 
-  Trip trip = Trip.fromJson(decodedResponde);
+  List<TripModel> trips = decodedResponde.map((trip) => TripModel.fromJson(trip)).toList();
 
   if(response.statusCode == 200){
-    return trip;
+    return trips;
   } else {
     throw Exception("Error Getting Trips");
   }

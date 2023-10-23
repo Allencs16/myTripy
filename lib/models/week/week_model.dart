@@ -9,8 +9,8 @@ class WeekModel {
   int? id;
   double? totalPrice;
   double? totalKm;
-  double? budget;
-  double? expenses;
+  double? totalBudget;
+  double? totalExpenses;
   DateTime? startDate;
   DateTime? endDate;
   User? user;
@@ -20,8 +20,8 @@ class WeekModel {
     this.id,
     this.totalPrice,
     this.totalKm,
-    this.budget,
-    this.expenses,
+    this.totalBudget,
+    this.totalExpenses,
     this.startDate,
     this.endDate,
     this.user,
@@ -33,8 +33,8 @@ class WeekModel {
       id: json["id"],
       totalPrice: json["totalPrice"],
       totalKm: json["totalKm"],
-      budget: json["budget"],
-      expenses: json["expenses"],
+      totalBudget: json["totalBudget"],
+      totalExpenses: json["totalExpenses"],
       startDate: DateTime.parse(json["startDate"]),
       endDate: DateTime.parse(json["endDate"]),
       user: User.fromJson(json["user"]),
