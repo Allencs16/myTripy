@@ -38,7 +38,7 @@ class WeekModel {
       startDate: DateTime.parse(json["startDate"]),
       endDate: DateTime.parse(json["endDate"]),
       user: User.fromJson(json["user"]),
-      current: json["current"]
+      current: json["current"],
     );
   }
 }

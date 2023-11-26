@@ -5,8 +5,9 @@ class InputText extends StatefulWidget{
   String title;
   String label;
   bool isPassword;
+  TextInputType textInputType;
 
-  InputText({Key? key, required this.controller, required this.title, required this.label, required this.isPassword}) : super(key: key);
+  InputText({Key? key, required this.controller, required this.title, required this.label, required this.isPassword, required this.textInputType}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -27,6 +28,7 @@ class _StateInputText extends State<InputText> {
         focusColor: Theme.of(context).primaryColor,
       ),
       obscureText: widget.isPassword,
+      keyboardType: widget.textInputType,
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mytripy/components/button/Button.dart';
 
 class MainBottomSheet{
-  static void showBottomSheet(BuildContext context, dynamic element){
+  static void showBottomSheet(BuildContext context, String element, List<Widget> widgets){    
      showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -21,15 +22,15 @@ class MainBottomSheet{
           ),
           child: Column(
             children: [
-              // Add your content for the bottom sheet here
               ListTile(
-                title: Text(element.startDate.toString()),
-                onTap: () {
-                  // Handle the tap on option 1
-                  // For example, you can close the bottom sheet
+                title: Text(element),
+                onTap: () {                                    
                   Navigator.pop(context);
                 },
               ),
+              Column(
+                children: widgets
+              )
             ],
           ),
         );

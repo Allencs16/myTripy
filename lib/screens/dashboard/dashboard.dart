@@ -137,6 +137,7 @@ class _StateDashboard extends State<Dashboard>{
                     if(snapshot.hasData){
                       return Column(
                         children: [
+                          snapshot.data!.isEmpty ? const Text('Não há viagens hoje') :
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.95,
                             child: ListView.builder(
@@ -179,7 +180,7 @@ class _StateDashboard extends State<Dashboard>{
                         ],
                       );
                     } else if(snapshot.hasError){
-                      return const Text("Não há viagens para hoje.");
+                      return const Text("teste");
                     }
                     return Loading();
                   },
