@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:mytripy/models/user/user.dart';
 import 'package:mytripy/services/requestService.dart/request-service.dart';
 import 'package:mytripy/services/serviceLocator.dart';
+import 'package:mytripy/services/user/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WeekModel {
@@ -47,8 +48,10 @@ Future<List<WeekModel>> getWeekByUser() async {
   final RequestService _requestService = getIt<RequestService>();
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString("token");
+  final UserService _userService = getIt<UserService>();
+  User usuarioLogado = await _userService.getUserLogado();
 
-  var response = await _requestService.httpGet(token.toString(), "/week");
+  var response = await _requestService.httpGet(token.toString(), "/week/${usuarioLogado.id}");
   
   var decodedResponde = jsonDecode(response.body);
 
