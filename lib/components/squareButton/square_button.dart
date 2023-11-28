@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SquareButton extends StatefulWidget {
-  String title;
-  IconData icon;
+  final String title;
+  final IconData icon;
+  final VoidCallback onPressed;
 
-  SquareButton({required this.title, required this.icon});
+  SquareButton({required this.title, required this.icon, required this.onPressed});
 
   @override
   State<StatefulWidget> createState() {
@@ -13,40 +14,50 @@ class SquareButton extends StatefulWidget {
 }
 
 class _SquareButtonState extends State<SquareButton> {
-  bool _isTapped = false;
+  bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _isTapped = !_isTapped;
-          });
-        },
-        child: Container(
-          width: 100,
-          height: 100,
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        color: isPressed ? Theme.of(context).primaryColor.withAlpha(80) : Theme.of(context).primaryColor,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              isPressed = !isPressed;
+            });
+            widget.onPressed();
+          },
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                widget.icon,
-                color: Colors.white,
-              ),
-              Text(
-                widget.title,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: Icon(widget.icon, color: Colors.white),
+                    ),
+                    SizedBox(
+                      child: Text(
+                        widget.title,
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).primaryColor),
         ),
       ),
     );

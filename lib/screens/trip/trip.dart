@@ -5,7 +5,9 @@ import 'package:mytripy/components/bottomSheet/bottom_sheet.dart';
 import 'package:mytripy/components/button/Button.dart';
 import 'package:mytripy/components/inputText/inputText.dart';
 import 'package:mytripy/components/section/section.dart';
+import 'package:mytripy/components/snackbar/Main_snackBar.dart';
 import 'package:mytripy/components/squareButton/square_button.dart';
+import 'package:mytripy/models/expense/expenseModel.dart';
 import 'package:mytripy/models/trips/trip.dart';
 
 class Trip extends StatefulWidget{
@@ -20,11 +22,11 @@ class Trip extends StatefulWidget{
 }
 
 class _TripState extends State<Trip>{
-  TextEditingController gastoBottomSheet = new TextEditingController();
-  List<String> typesExpenses = <String>['Comida', 'Gasolina', 'Hospedagem', 'Outro'];
+  late int typeExpense;
+  TextEditingController expenseBottomSheet = new TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = typesExpenses.first;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.trip.name.toString()),
@@ -125,10 +127,20 @@ class _TripState extends State<Trip>{
                                     padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
                                     child: Row(
                                       children: [
-                                        SquareButton(icon: Icons.food_bank, title: 'Comida'),
-                                        SquareButton(icon: Icons.gas_meter, title: 'Gasolina'),
-                                        SquareButton(icon: Icons.home, title: 'Hospedagem'),
-                                        SquareButton(icon: Icons.menu, title: 'Outros',),
+                                        SquareButton(icon: Icons.food_bank, title: 'Comida', onPressed: () {
+                                          setState(() {
+                                            typeExpense = 1;
+                                          });
+                                        },),
+                                        SquareButton(icon: Icons.gas_meter, title: 'Gasolina', onPressed: () {
+                                          typeExpense = 2;
+                                        },),
+                                        SquareButton(icon: Icons.home, title: 'Hospedagem', onPressed: () {
+                                          typeExpense = 0;
+                                        },),
+                                        SquareButton(icon: Icons.menu, title: 'Outros', onPressed: () {
+                                          typeExpense = 3;
+                                        },),
                                       ],
                                     ),
                                   ),
@@ -137,7 +149,7 @@ class _TripState extends State<Trip>{
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 child: InputText(
-                                  controller: gastoBottomSheet, 
+                                  controller: expenseBottomSheet, 
                                   title: 'Valor do Gasto', 
                                   label: 'Valor do Gasto', 
                                   isPassword: false,
@@ -151,7 +163,7 @@ class _TripState extends State<Trip>{
                                   padding: const EdgeInsets.only(top: 12.0),
                                   child: Button(
                                     onPressed: () {
-                                      print(gastoBottomSheet.text);
+                                      createExpense();
                                     }, 
                                     title: 'Salvar gasto'
                                   ),
@@ -171,5 +183,12 @@ class _TripState extends State<Trip>{
         )
       )
     );
+  }
+
+  createExpense() async{
+    ExpenseModel expense = ExpenseModel(expenseDate: DateTime.now().toString(), type: typeExpense.toString(), value: int.parse(expenseBottomSheet.text), weekId: widget.trip.id);
+    createAndSaveExpense(expense);
+    MainSnackBar.showSnackBar(context, "Despesa Criada com Sucesso.");
+    Navigator.pop(context);
   }
 }
