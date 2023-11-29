@@ -168,12 +168,25 @@ class _TripState extends State<Trip>{
                                     title: 'Salvar gasto'
                                   ),
                                 ),
-                              )
+                              ),
                             ]);
                           }, 
                           title: 'Criar Gasto'
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width, 
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Button(
+                            onPressed: () {
+                              MainSnackBar.showSnackBar(context, "Check in realizado.");
+                              Navigator.pushNamed(context, "/dashboard");
+                            }, 
+                            title: 'Check-in'
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -186,7 +199,7 @@ class _TripState extends State<Trip>{
   }
 
   createExpense() async{
-    ExpenseModel expense = ExpenseModel(expenseDate: DateTime.now().toString(), type: typeExpense.toString(), value: int.parse(expenseBottomSheet.text), weekId: widget.trip.id);
+    ExpenseModel expense = ExpenseModel(expenseDate: DateTime.now().toString(), type: typeExpense.toString(), value: int.parse(expenseBottomSheet.text), weekId: widget.trip.weekModel!.id);
     createAndSaveExpense(expense);
     MainSnackBar.showSnackBar(context, "Despesa Criada com Sucesso.");
     Navigator.pop(context);

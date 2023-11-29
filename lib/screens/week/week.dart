@@ -22,6 +22,7 @@ class Week extends StatefulWidget{
 class _StateWeek extends State<Week>{
   DateTime _currentDate = DateTime.now();
   WeekModel? currentWeek;
+  int? currentWeekBudget;
   
   @override
   Widget build(BuildContext context) {
